@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/widgets/hotel_card.dart';
+import '../widgets/hotel_card.dart';
 
 class FavoritesScreen extends StatefulWidget {
   @override
@@ -38,17 +38,39 @@ class _FavoritesScreenState extends State<FavoritesScreen> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('المفضلة'),
-        backgroundColor: Color(0xFF1a365d),
+        title: Text(
+          'المفضلة',
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+        ),
+        backgroundColor: theme.primaryColor,
         foregroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: theme.iconTheme.size,
+        ),
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: 'الفنادق'),
-            Tab(text: 'العروض'),
+            Tab(
+              text: 'الفنادق',
+              icon: Icon(
+                Icons.hotel,
+                size: theme.iconTheme.size,
+              ),
+            ),
+            Tab(
+              text: 'العروض',
+              icon: Icon(
+                Icons.card_giftcard,
+                size: theme.iconTheme.size,
+              ),
+            ),
           ],
         ),
       ),
@@ -57,7 +79,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with SingleTickerProv
         children: [
           // الفنادق المفضلة
           favoriteHotels.isEmpty
-              ? _buildEmptyFavorites()
+              ? _buildEmptyFavorites(theme, isRTL)
               : ListView.builder(
                   padding: EdgeInsets.all(16),
                   itemCount: favoriteHotels.length,
@@ -75,34 +97,37 @@ class _FavoritesScreenState extends State<FavoritesScreen> with SingleTickerProv
                 ),
 
           // العروض المفضلة
-          _buildEmptyOffers(),
+          _buildEmptyOffers(theme, isRTL),
         ],
       ),
     );
   }
 
-  Widget _buildEmptyFavorites() {
+  Widget _buildEmptyFavorites(ThemeData theme, bool isRTL) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.hotel, size: 80, color: Colors.grey[300]),
+          Icon(
+            Icons.hotel, 
+            size: 80, 
+            color: theme.dividerColor
+          ),
           SizedBox(height: 16),
           Text(
             'لا توجد فنادق مفضلة',
-            style: TextStyle(
-              fontSize: 18,
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.grey[600],
+              color: theme.hintColor,
             ),
           ),
           SizedBox(height: 8),
           Text(
             'يمكنك إضافة الفنادق إلى المفضلة بالنقر على أيقونة القلب',
-            style: TextStyle(
-              color: Colors.grey[500],
-             // textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.hintColor.withOpacity(0.7),
             ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: 20),
           ElevatedButton(
@@ -111,7 +136,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with SingleTickerProv
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFFd69e2e),
-              foregroundColor: Color(0xFF1a365d),
+              foregroundColor: theme.primaryColor,
             ),
             child: Text('استكشف الفنادق'),
           ),
@@ -120,28 +145,31 @@ class _FavoritesScreenState extends State<FavoritesScreen> with SingleTickerProv
     );
   }
 
-  Widget _buildEmptyOffers() {
+  Widget _buildEmptyOffers(ThemeData theme, bool isRTL) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.card_giftcard, size: 80, color: Colors.grey[300]),
+          Icon(
+            Icons.card_giftcard, 
+            size: 80, 
+            color: theme.dividerColor
+          ),
           SizedBox(height: 16),
           Text(
             'لا توجد عروض مفضلة',
-            style: TextStyle(
-              fontSize: 18,
+            style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.grey[600],
+              color: theme.hintColor,
             ),
           ),
           SizedBox(height: 8),
           Text(
             'يمكنك إضافة العروض إلى المفضلة بالنقر على أيقونة القلب',
-            style: TextStyle(
-              color: Colors.grey[500],
-             // textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.hintColor.withOpacity(0.7),
             ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: 20),
           ElevatedButton(
@@ -150,7 +178,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with SingleTickerProv
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFFd69e2e),
-              foregroundColor: Color(0xFF1a365d),
+              foregroundColor: theme.primaryColor,
             ),
             child: Text('استكشف العروض'),
           ),

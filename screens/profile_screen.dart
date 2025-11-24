@@ -1,140 +1,181 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/core/app_controller.dart';
-import 'package:des/routes/app_routes.dart';
-import 'package:des/widgets/custom_button.dart';
+import '../core/app_controller.dart';
+import '../routes/app_routes.dart';
+import '../widgets/custom_button.dart';
 
 class ProfileScreen extends StatelessWidget {
   final AppController appController = Get.find<AppController>();
 
   // بيانات وهمية للمستخدم
   final Map<String, dynamic> userData = {
-    'name': 'أحمد اليماني',
-    'email': 'ahmed@yemenstay.com',
+    'name': 'Abdulrhman',
+    'email': 'abood@yemenstay.com',
     'phone': '+967 712 345 678',
     'image': 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=60',
     'memberSince': 'منذ 2022',
     'verified': true,
   };
 
-  // إحصائيات المستخدم
-  final List<Map<String, dynamic>> stats = [
-    {'value': '5', 'label': 'حجوزات', 'icon': Icons.bookmark},
-    {'value': '12', 'label': 'ليلة', 'icon': Icons.hotel},
-    {'value': '4.8', 'label': 'تقييم', 'icon': Icons.star},
-  ];
-
-  // قائمة الخيارات
-  final List<Map<String, dynamic>> menuItems = [
-    {
-      'icon': Icons.edit,
-      'title': 'تعديل الملف الشخصي',
-      'route': AppRoutes.EDIT_PROFILE,
-      'color': Color(0xFF1a365d),
-    },
-    {
-      'icon': Icons.favorite,
-      'title': 'المفضلة',
-      'route': AppRoutes.FAVORITES,
-      'color': Color(0xFFe53e3e),
-    },
-    {
-      'icon': Icons.card_giftcard,
-      'title': 'العروض الخاصة',
-      'route': AppRoutes.SPECIAL_OFFERS,
-      'color': Color(0xFFd69e2e),
-    },
-    {
-      'icon': Icons.notifications,
-      'title': 'الإشعارات',
-      'route': AppRoutes.NOTIFICATIONS,
-      'color': Color(0xFF3182ce),
-      'badge': '3',
-    },
-    {
-      'icon': Icons.settings,
-      'title': 'الإعدادات',
-      'route': AppRoutes.SETTINGS,
-      'color': Color(0xFF2d3748),
-    },
-    {
-      'icon': Icons.help,
-      'title': 'المساعدة والدعم',
-      'route': AppRoutes.HELP,
-      'color': Color(0xFF38a169),
-    },
-    {
-      'icon': Icons.info,
-      'title': 'عن التطبيق',
-      'route': '/about',
-      'color': Color(0xFF718096),
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
+    // إحصائيات المستخدم
+    final List<Map<String, dynamic>> stats = [
+      {
+        'value': '5',
+        'label': 'حجوزات',
+        'icon': Icons.bookmark,
+        'color': theme.primaryColor,
+        'size': 24.0,
+      },
+      {
+        'value': '12',
+        'label': 'ليلة',
+        'icon': Icons.hotel,
+        'color': theme.primaryColor,
+        'size': 24.0,
+      },
+      {
+        'value': '4.8',
+        'label': 'تقييم',
+        'icon': Icons.star,
+        'color': theme.primaryColor,
+        'size': 24.0,
+      },
+    ];
+
+    // قائمة الخيارات
+    final List<Map<String, dynamic>> menuItems = [
+      {
+        'icon': Icons.edit,
+        'title': 'تعديل الملف الشخصي',
+        'route': AppRoutes.EDIT_PROFILE,
+        'color': theme.primaryColor,
+        'iconSize': 20.0,
+      },
+      {
+        'icon': Icons.favorite,
+        'title': 'المفضلة',
+        'route': AppRoutes.FAVORITES,
+        'color': Colors.red,
+        'iconSize': 20.0,
+      },
+      {
+        'icon': Icons.card_giftcard,
+        'title': 'العروض الخاصة',
+        'route': AppRoutes.SPECIAL_OFFERS,
+        'color': Color(0xFFd69e2e),
+        'iconSize': 20.0,
+      },
+      {
+        'icon': Icons.notifications,
+        'title': 'الإشعارات',
+        'route': AppRoutes.NOTIFICATIONS,
+        'color': Colors.blue,
+        'iconSize': 20.0,
+        'badge': '3',
+      },
+      {
+        'icon': Icons.settings,
+        'title': 'الإعدادات',
+        'route': AppRoutes.SETTINGS,
+        'color': Colors.grey[700]!,
+        'iconSize': 20.0,
+      },
+      {
+        'icon': Icons.help,
+        'title': 'المساعدة والدعم',
+        'route': AppRoutes.HELP,
+        'color': Colors.green,
+        'iconSize': 20.0,
+      },
+      {
+        'icon': Icons.info,
+        'title': 'عن التطبيق',
+        'route': '/about',
+        'color': Colors.grey[600]!,
+        'iconSize': 20.0,
+      },
+    ];
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
-      body: CustomScrollView(
-        slivers: [
-          // AppBar مخصص
-          SliverAppBar(
-            backgroundColor: Color(0xFF1a365d),
-            expandedHeight: 200.0,
-            floating: false,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                'حسابي',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            // AppBar مخصص
+            SliverAppBar(
+              backgroundColor: theme.primaryColor,
+              expandedHeight: 350.0, // زيادة الارتفاع قليلاً
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Text(
+                  'حسابي',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                background: _buildProfileHeader(context, theme),
+              ),
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                    size: theme.iconTheme.size,
+                  ),
+                  onPressed: () {
+                    Get.toNamed(AppRoutes.SETTINGS);
+                  },
+                ),
+              ],
+            ),
+
+            // محتوى الصفحة
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20.0), // إضافة padding سفلي إضافي
+                child: Column(
+                  children: [
+                    // بطاقة الإحصائيات
+                    _buildStatsCard(context, theme, stats),
+                    SizedBox(height: 16),
+
+                    // بطاقة معلومات العضوية
+                    _buildMembershipCard(context, theme),
+                    SizedBox(height: 16),
+
+                    // قائمة الخيارات
+                    _buildMenuList(context, theme, menuItems, isRTL),
+                    SizedBox(height: 16),
+
+                    // زر تسجيل الخروج
+                    _buildLogoutButton(context, theme),
+                    SizedBox(height: 20),
+                  ],
                 ),
               ),
-              background: _buildProfileHeader(),
             ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () {
-                  Get.toNamed(AppRoutes.SETTINGS);
-                },
-              ),
-            ],
-          ),
-
-          // محتوى الصفحة
-          SliverList(
-            delegate: SliverChildListDelegate([
-              // بطاقة الإحصائيات
-              _buildStatsCard(),
-              SizedBox(height: 16),
-
-              // بطاقة معلومات العضوية
-              _buildMembershipCard(),
-              SizedBox(height: 16),
-
-              // قائمة الخيارات
-              _buildMenuList(),
-              SizedBox(height: 16),
-
-              // زر تسجيل الخروج
-              _buildLogoutButton(),
-              SizedBox(height: 20),
-            ]),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildProfileHeader() {
+  Widget _buildProfileHeader(BuildContext context, ThemeData theme) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF1a365d), Color(0xFF0f2040)],
+          colors: [theme.primaryColor, theme.primaryColor.darken(0.1)],
         ),
       ),
       child: Stack(
@@ -173,6 +214,7 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 // صورة المستخدم
                 Stack(
+                  alignment: Alignment.center,
                   children: [
                     Container(
                       width: 100,
@@ -237,22 +279,32 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(height: 16),
 
                 // اسم المستخدم
-                Text(
-                  userData['name'],
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    userData['name'],
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(height: 4),
 
                 // البريد الإلكتروني
-                Text(
-                  userData['email'],
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    userData['email'],
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.white70,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(height: 8),
@@ -269,8 +321,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   child: Text(
                     'عضو ${userData['memberSince']}',
-                    style: TextStyle(
-                      fontSize: 12,
+                    style: theme.textTheme.bodySmall?.copyWith(
                       color: Color(0xFFd69e2e),
                       fontWeight: FontWeight.bold,
                     ),
@@ -284,12 +335,12 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsCard() {
+  Widget _buildStatsCard(BuildContext context, ThemeData theme, List<Map<String, dynamic>> stats) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -306,54 +357,64 @@ class ProfileScreen extends StatelessWidget {
             icon: stat['icon'],
             value: stat['value'],
             label: stat['label'],
+            color: stat['color'],
+            size: stat['size'],
+            theme: theme,
           );
         }).toList(),
       ),
     );
   }
 
-  Widget _buildStatItem({required IconData icon, required String value, required String label}) {
-    return Column(
-      children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF1a365d), Color(0xFF2a4a7f)],
+  Widget _buildStatItem({
+    required IconData icon,
+    required String value,
+    required String label,
+    required Color color,
+    required double size,
+    required ThemeData theme,
+  }) {
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [color, color.darken(0.1)],
+              ),
+              shape: BoxShape.circle,
             ),
-            shape: BoxShape.circle,
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: size,
+            ),
           ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 24,
+          SizedBox(height: 8),
+          Text(
+            value,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
           ),
-        ),
-        SizedBox(height: 8),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF1a365d),
+          SizedBox(height: 4),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.hintColor,
+            ),
           ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildMembershipCard() {
+  Widget _buildMembershipCard(BuildContext context, ThemeData theme) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16),
       padding: EdgeInsets.all(20),
@@ -397,8 +458,7 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Text(
                   'عضو متميز',
-                  style: TextStyle(
-                    fontSize: 18,
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -406,8 +466,7 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(height: 4),
                 Text(
                   'أنت مؤهل للحصول على خصومات حصرية وعروض خاصة',
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: theme.textTheme.bodySmall?.copyWith(
                     color: Colors.white.withOpacity(0.8),
                   ),
                   maxLines: 2,
@@ -418,18 +477,20 @@ class ProfileScreen extends StatelessWidget {
           ),
 
           // الزر
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              'تطوير',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFd69e2e),
+          GestureDetector(
+            onTap: _showComingSoon,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                'تطوير',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFd69e2e),
+                ),
               ),
             ),
           ),
@@ -438,11 +499,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuList() {
+  Widget _buildMenuList(BuildContext context, ThemeData theme, List<Map<String, dynamic>> menuItems, bool isRTL) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -452,31 +513,30 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        children: menuItems.asMap().entries.map((entry) {
-          final index = entry.key;
-          final item = entry.value;
-          final isLast = index == menuItems.length - 1;
-
-          return Column(
-            children: [
-              _buildMenuItem(
-                icon: item['icon'],
-                title: item['title'],
-                color: item['color'],
-                badge: item['badge'],
-                onTap: () {
-                  if (item['route'] != null) {
-                    Get.toNamed(item['route']);
-                  } else {
-                    _showComingSoon();
-                  }
-                },
-              ),
-              if (!isLast) Divider(height: 1, indent: 60),
-            ],
+      child: ListView.separated(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: menuItems.length,
+        itemBuilder: (context, index) {
+          final item = menuItems[index];
+          return _buildMenuItem(
+            icon: item['icon'],
+            title: item['title'],
+            color: item['color'],
+            iconSize: item['iconSize'],
+            badge: item['badge'],
+            theme: theme,
+            isRTL: isRTL,
+            onTap: () {
+              if (item['route'] != null) {
+                Get.toNamed(item['route']);
+              } else {
+                _showComingSoon();
+              }
+            },
           );
-        }).toList(),
+        },
+        separatorBuilder: (context, index) => Divider(height: 1, indent: 60),
       ),
     );
   }
@@ -485,6 +545,9 @@ class ProfileScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required Color color,
+    required double iconSize,
+    required ThemeData theme,
+    required bool isRTL,
     String? badge,
     required VoidCallback onTap,
   }) {
@@ -499,16 +562,19 @@ class ProfileScreen extends StatelessWidget {
         child: Icon(
           icon,
           color: color,
-          size: 20,
+          size: iconSize,
         ),
       ),
       title: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
+          Flexible(
+            child: Text(
+              title,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           if (badge != null) ...[
@@ -521,9 +587,8 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Text(
                 badge,
-                style: TextStyle(
+                style: theme.textTheme.labelSmall?.copyWith(
                   color: Colors.white,
-                  fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -535,20 +600,20 @@ class ProfileScreen extends StatelessWidget {
         width: 30,
         height: 30,
         decoration: BoxDecoration(
-          color: Colors.grey[100],
+          color: theme.dividerColor.withOpacity(0.1),
           shape: BoxShape.circle,
         ),
         child: Icon(
-          Icons.arrow_back_ios_new,
+          isRTL ? Icons.arrow_back_ios_new : Icons.arrow_forward_ios,
           size: 14,
-          color: Colors.grey[600],
+          color: theme.hintColor,
         ),
       ),
       onTap: onTap,
     );
   }
 
-  Widget _buildLogoutButton() {
+  Widget _buildLogoutButton(BuildContext context, ThemeData theme) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: CustomButton(
@@ -558,6 +623,8 @@ class ProfileScreen extends StatelessWidget {
         textColor: Colors.red,
         isFullWidth: true,
         icon: Icons.logout,
+        iconSize: 20,
+       // borderColor: Colors.red,
       ),
     );
   }
@@ -689,5 +756,17 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: Color(0xFFd69e2e),
       colorText: Color(0xFF1a365d),
     );
+  }
+}
+
+// Extension مساعد لتغميق الألوان
+extension ColorExtension on Color {
+  Color darken([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
   }
 }

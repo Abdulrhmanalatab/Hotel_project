@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/routes/app_routes.dart';
-import 'package:des/widgets/custom_button.dart';
-import 'package:des/widgets/custom_text_field.dart';
+import '../routes/app_routes.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('استعادة كلمة المرور'),
-        backgroundColor: Color(0xFF1a365d),
+        title: Text(
+          'استعادة كلمة المرور',
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+        ),
+        backgroundColor: theme.primaryColor,
         foregroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: theme.iconTheme.size,
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -27,7 +37,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Color(0xFF1a365d),
+                  color: theme.primaryColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
@@ -39,18 +49,16 @@ class ForgotPasswordScreen extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                 'استعادة كلمة المرور',
-                style: TextStyle(
-                  fontSize: 24,
+                style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1a365d),
+                  color: theme.primaryColor,
                 ),
               ),
               SizedBox(height: 8),
               Text(
                 'أدخل بريدك الإلكتروني لإرسال رابط الاستعادة',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.hintColor,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -63,6 +71,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                 hintText: 'أدخل بريدك الإلكتروني',
                 icon: Icons.email,
                 keyboardType: TextInputType.emailAddress,
+                iconSize: theme.iconTheme.size,
+                theme: theme,
               ),
               SizedBox(height: 30),
 
@@ -73,7 +83,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                   _sendResetLink();
                 },
                 backgroundColor: Color(0xFFd69e2e),
-                textColor: Color(0xFF1a365d),
+                textColor: theme.primaryColor,
+                iconSize: theme.iconTheme.size,
               ),
               SizedBox(height: 20),
 
@@ -81,15 +92,18 @@ class ForgotPasswordScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('تذكرت كلمة المرور؟'),
+                  Text(
+                    'تذكرت كلمة المرور؟',
+                    style: theme.textTheme.bodyMedium,
+                  ),
                   TextButton(
                     onPressed: () {
                       Get.back();
                     },
                     child: Text(
                       'تسجيل الدخول',
-                      style: TextStyle(
-                        color: Color(0xFF1a365d),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

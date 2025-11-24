@@ -5,20 +5,25 @@ class OfferCard extends StatelessWidget {
   final Map<String, dynamic> offer;
   final VoidCallback onBook;
   final VoidCallback onFavorite;
+  final ThemeData? theme;
 
   const OfferCard({
     Key? key,
     required this.offer,
     required this.onBook,
     required this.onFavorite,
+    this.theme,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = theme ?? Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: themeData.cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -55,7 +60,8 @@ class OfferCard extends StatelessWidget {
               ),
               Positioned(
                 top: 10,
-                right: 10,
+                right: isRTL ? 10 : null,
+                left: isRTL ? null : 10,
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
@@ -64,9 +70,8 @@ class OfferCard extends StatelessWidget {
                   ),
                   child: Text(
                     'خصم ${offer['discount']}',
-                    style: TextStyle(
+                    style: themeData.textTheme.labelSmall?.copyWith(
                       color: Color(0xFF1a365d),
-                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -82,22 +87,24 @@ class OfferCard extends StatelessWidget {
               children: [
                 Text(
                   offer['title'],
-                  style: TextStyle(
+                  style: themeData.textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Color(0xFF1a365d),
+                    color: themeData.primaryColor,
                   ),
                 ),
                 SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.location_on, size: 14, color: Color(0xFF1a365d)),
+                    Icon(
+                      Icons.location_on, 
+                      size: 14, 
+                      color: themeData.primaryColor
+                    ),
                     SizedBox(width: 4),
                     Text(
                       offer['location'],
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
+                      style: themeData.textTheme.bodyMedium?.copyWith(
+                        color: themeData.hintColor,
                       ),
                     ),
                   ],
@@ -105,13 +112,16 @@ class OfferCard extends StatelessWidget {
                 SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.calendar_today, size: 14, color: Colors.grey[600]),
+                    Icon(
+                      Icons.calendar_today, 
+                      size: 14, 
+                      color: themeData.hintColor
+                    ),
                     SizedBox(width: 4),
                     Text(
                       offer['validUntil'],
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
+                      style: themeData.textTheme.bodyMedium?.copyWith(
+                        color: themeData.hintColor,
                       ),
                     ),
                   ],
@@ -121,19 +131,17 @@ class OfferCard extends StatelessWidget {
                   children: [
                     Text(
                       '${offer['originalPrice']} ريال',
-                      style: TextStyle(
+                      style: themeData.textTheme.bodyMedium?.copyWith(
                         decoration: TextDecoration.lineThrough,
-                        color: Colors.grey[600],
-                        fontSize: 14,
+                        color: themeData.hintColor,
                       ),
                     ),
                     SizedBox(width: 8),
                     Text(
                       '${offer['discountedPrice']} ريال',
-                      style: TextStyle(
+                      style: themeData.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Color(0xFF1a365d),
+                        color: themeData.primaryColor,
                       ),
                     ),
                   ],
@@ -151,7 +159,7 @@ class OfferCard extends StatelessWidget {
                     onPressed: onBook,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFd69e2e),
-                      foregroundColor: Color(0xFF1a365d),
+                      foregroundColor: themeData.primaryColor,
                       padding: EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -159,7 +167,7 @@ class OfferCard extends StatelessWidget {
                     ),
                     child: Text(
                       'احجز هذا العرض',
-                      style: TextStyle(
+                      style: themeData.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -180,6 +188,7 @@ class OfferCard extends StatelessWidget {
                     child: Icon(
                       Icons.favorite,
                       color: Color(0xFFd69e2e),
+                      size: themeData.iconTheme.size,
                     ),
                   ),
                 ),

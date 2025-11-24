@@ -5,6 +5,8 @@ class BannerCard extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final IconData icon;
+  final double? iconSize;
+  final ThemeData? theme;
 
   const BannerCard({
     Key? key,
@@ -12,10 +14,15 @@ class BannerCard extends StatelessWidget {
     required this.backgroundColor,
     required this.textColor,
     required this.icon,
+    this.iconSize,
+    this.theme,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = theme ?? Theme.of(context);
+    final double size = iconSize ?? themeData.iconTheme.size ?? 24.0;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(16),
@@ -30,14 +37,17 @@ class BannerCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: textColor),
+          Icon(
+            icon, 
+            color: textColor,
+            size: size,
+          ),
           SizedBox(width: 8),
           Text(
             message,
-            style: TextStyle(
+            style: themeData.textTheme.bodyLarge?.copyWith(
               color: textColor,
               fontWeight: FontWeight.bold,
-              fontSize: 16,
             ),
           ),
         ],

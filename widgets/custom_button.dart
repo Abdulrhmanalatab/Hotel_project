@@ -7,6 +7,8 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final bool isFullWidth;
   final IconData? icon;
+  final double? iconSize;
+  final ThemeData? theme;
 
   const CustomButton({
     Key? key,
@@ -16,10 +18,15 @@ class CustomButton extends StatelessWidget {
     this.textColor = const Color(0xFF1a365d),
     this.isFullWidth = true,
     this.icon,
+    this.iconSize,
+    this.theme,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = theme ?? Theme.of(context);
+    final double size = iconSize ?? themeData.iconTheme.size ?? 24.0;
+
     return SizedBox(
       width: isFullWidth ? double.infinity : null,
       child: ElevatedButton(
@@ -37,14 +44,18 @@ class CustomButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null) ...[
-              Icon(icon),
+              Icon(
+                icon,
+                size: size,
+                color: textColor,
+              ),
               SizedBox(width: 8),
             ],
             Text(
               text,
-              style: TextStyle(
-                fontSize: 16,
+              style: themeData.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
+                color: textColor,
               ),
             ),
           ],

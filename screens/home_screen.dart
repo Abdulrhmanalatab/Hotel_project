@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/core/app_controller.dart';
-import 'package:des/routes/app_routes.dart';
-import 'package:des/widgets/banner_card.dart';
-import 'package:des/widgets/city_card.dart';
-import 'package:des/widgets/hotel_card.dart';
-import 'package:des/widgets/search_card.dart';
+import '../core/app_controller.dart';
+import '../routes/app_routes.dart';
+import '../widgets/banner_card.dart';
+import '../widgets/city_card.dart';
+import '../widgets/hotel_card.dart';
+import '../widgets/search_card.dart';
 
 class HomeScreen extends StatelessWidget {
   final AppController appController = Get.find<AppController>();
@@ -60,17 +60,24 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Color(0xFF1a365d),
+        backgroundColor: theme.primaryColor,
         title: Row(
           children: [
-            Icon(Icons.landscape, color: Color(0xFFd69e2e)),
+            Icon(
+              Icons.landscape, 
+              color: Color(0xFFd69e2e),
+              size: theme.iconTheme.size,
+            ),
             SizedBox(width: 8),
             Text(
               'BookEase',
-              style: TextStyle(
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -81,7 +88,11 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: Stack(
               children: [
-                Icon(Icons.notifications, color: Colors.white),
+                Icon(
+                  Icons.notifications, 
+                  color: Colors.white,
+                  size: theme.iconTheme.size,
+                ),
                 Positioned(
                   right: 0,
                   child: Container(
@@ -111,12 +122,20 @@ class HomeScreen extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: Icon(Icons.search, color: Colors.white),
+            icon: Icon(
+              Icons.search, 
+              color: Colors.white,
+              size: theme.iconTheme.size,
+            ),
             onPressed: () {
               Get.toNamed(AppRoutes.SEARCH);
             },
           ),
         ],
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: theme.iconTheme.size,
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -127,13 +146,14 @@ class HomeScreen extends StatelessWidget {
             BannerCard(
               message: 'أهلاً بك في BookEase اكتشف جمال اليمن',
               backgroundColor: Color(0xFFd69e2e),
-              textColor: Color(0xFF1a365d),
+              textColor: theme.primaryColor,
               icon: Icons.coffee,
+              iconSize: theme.iconTheme.size,
             ),
             SizedBox(height: 16),
 
             // بطاقة البحث
-            SearchCard(),
+            SearchCard(theme: theme),
             SizedBox(height: 24),
 
             // قسم المدن
@@ -142,10 +162,9 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Text(
                   'المدن اليمنية',
-                  style: TextStyle(
-                    fontSize: 18,
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1a365d),
+                    color: theme.primaryColor,
                   ),
                 ),
                 TextButton(
@@ -156,10 +175,16 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text(
                         'عرض الكل',
-                        style: TextStyle(color: Color(0xFFd69e2e)),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: Color(0xFFd69e2e),
+                        ),
                       ),
                       SizedBox(width: 4),
-                      Icon(Icons.arrow_back_ios, size: 14, color: Color(0xFFd69e2e)),
+                      Icon(
+                        isRTL ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+                        size: 14, 
+                        color: Color(0xFFd69e2e)
+                      ),
                     ],
                   ),
                 ),
@@ -184,6 +209,7 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(AppRoutes.HOTEL_DETAILS);
                   },
+                  theme: theme,
                 );
               },
             ),
@@ -197,8 +223,7 @@ class HomeScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF1a365d), Color(0xFF0f2040)],
-                ),
+                  colors: [theme.primaryColor, theme.primaryColor.darken(0.1)], ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -206,12 +231,15 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.card_giftcard, color: Colors.white),
+                      Icon(
+                        Icons.card_giftcard, 
+                        color: Colors.white,
+                        size: theme.iconTheme.size,
+                      ),
                       SizedBox(width: 8),
                       Text(
                         'عروض يمنية حصرية',
-                        style: TextStyle(
-                          fontSize: 18,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -221,8 +249,7 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(
                     'استفد من عروضنا الخاصة لفترة محدودة واحصل على خصومات تصل إلى 40%',
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.white70,
                     ),
                   ),
@@ -235,7 +262,7 @@ class HomeScreen extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFd69e2e),
-                        foregroundColor: Color(0xFF1a365d),
+                        foregroundColor: theme.primaryColor,
                         padding: EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -244,13 +271,15 @@ class HomeScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.local_fire_department),
+                          Icon(
+                            Icons.local_fire_department,
+                            size: theme.iconTheme.size,
+                          ),
                           SizedBox(width: 8),
                           Text(
                             'استعرض العروض',
-                            style: TextStyle(
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
                             ),
                           ),
                         ],
@@ -268,10 +297,9 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Text(
                   'فنادق مميزة في اليمن',
-                  style: TextStyle(
-                    fontSize: 18,
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1a365d),
+                    color: theme.primaryColor,
                   ),
                 ),
                 TextButton(
@@ -282,10 +310,16 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text(
                         'عرض الكل',
-                        style: TextStyle(color: Color(0xFFd69e2e)),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: Color(0xFFd69e2e),
+                        ),
                       ),
                       SizedBox(width: 4),
-                      Icon(Icons.arrow_back_ios, size: 14, color: Color(0xFFd69e2e)),
+                      Icon(
+                        isRTL ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+                        size: 14, 
+                        color: Color(0xFFd69e2e)
+                      ),
                     ],
                   ),
                 ),
@@ -304,6 +338,7 @@ class HomeScreen extends StatelessWidget {
                   onBook: () {
                     Get.toNamed(AppRoutes.BOOKING);
                   },
+                  theme: theme,
                 );
               }).toList(),
             ),
@@ -313,7 +348,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -328,14 +363,17 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.landscape, color: Color(0xFF1a365d)),
+                      Icon(
+                        Icons.landscape, 
+                        color: theme.primaryColor,
+                        size: theme.iconTheme.size,
+                      ),
                       SizedBox(width: 8),
                       Text(
                         'اكتشف التراث اليمني',
-                        style: TextStyle(
-                          fontSize: 16,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF1a365d),
+                          color: theme.primaryColor,
                         ),
                       ),
                     ],
@@ -343,9 +381,8 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(height: 12),
                   Text(
                     'اليمن موطن لأقدم الحضارات العربية وتتميز بتراث غني وعريق. استمتع بتجربة فريدة تجمع بين الأصالة والحداثة.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.hintColor,
                       height: 1.6,
                     ),
                   ),
@@ -358,10 +395,10 @@ class HomeScreen extends StatelessWidget {
                     mainAxisSpacing: 10,
                     childAspectRatio: 2.5,
                     children: [
-                      _buildHeritageItem(Icons.restaurant, 'المطبخ اليمني الأصيل'),
-                      _buildHeritageItem(Icons.mosque, 'المساجد التاريخية'),
-                      _buildHeritageItem(Icons.landscape, 'القرى الجبلية'),
-                      _buildHeritageItem(Icons.history, 'المواقع الأثرية'),
+                      _buildHeritageItem(Icons.restaurant, 'المطبخ اليمني الأصيل', theme),
+                      _buildHeritageItem(Icons.mosque, 'المساجد التاريخية', theme),
+                      _buildHeritageItem(Icons.landscape, 'القرى الجبلية', theme),
+                      _buildHeritageItem(Icons.history, 'المواقع الأثرية', theme),
                     ],
                   ),
                 ],
@@ -371,26 +408,32 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: _buildBottomNavigationBar(theme, isRTL),
     );
   }
 
-  Widget _buildHeritageItem(IconData icon, String text) {
+  Widget _buildHeritageItem(IconData icon, String text, ThemeData theme) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, color: Color(0xFFd69e2e), size: 24),
+        Icon(
+          icon, 
+          color: Color(0xFFd69e2e), 
+          size: theme.iconTheme.size,
+        ),
         SizedBox(height: 4),
         Text(
           text,
-          style: TextStyle(fontSize: 12),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.hintColor,
+          ),
           textAlign: TextAlign.center,
         ),
       ],
     );
   }
 
-  Widget _buildBottomNavigationBar() {
+  Widget _buildBottomNavigationBar(ThemeData theme, bool isRTL) {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -422,28 +465,52 @@ class HomeScreen extends StatelessWidget {
         },
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Color(0xFFd69e2e),
-        unselectedItemColor: Colors.grey[600],
-        selectedLabelStyle: TextStyle(fontSize: 12),
-        unselectedLabelStyle: TextStyle(fontSize: 12),
+        unselectedItemColor: theme.hintColor,
+        selectedLabelStyle: theme.textTheme.labelSmall,
+        unselectedLabelStyle: theme.textTheme.labelSmall,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+              size: theme.iconTheme.size,
+            ),
             label: 'الرئيسية',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(
+              Icons.search,
+              size: theme.iconTheme.size,
+            ),
             label: 'البحث',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
+            icon: Icon(
+              Icons.calendar_today,
+              size: theme.iconTheme.size,
+            ),
             label: 'حجوزاتي',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+              size: theme.iconTheme.size,
+            ),
             label: 'حسابي',
           ),
         ],
       ),
     );
+  }
+}
+
+// Extension مساعد لتغميق الألوان
+extension ColorExtension on Color {
+  Color darken([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
   }
 }

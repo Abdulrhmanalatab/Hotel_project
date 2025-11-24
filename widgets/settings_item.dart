@@ -5,6 +5,7 @@ class SettingsItem extends StatelessWidget {
   final String description;
   final Widget? trailing;
   final VoidCallback? onTap;
+  final ThemeData? theme;
 
   const SettingsItem({
     Key? key,
@@ -12,16 +13,19 @@ class SettingsItem extends StatelessWidget {
     required this.description,
     this.trailing,
     this.onTap,
+    this.theme,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = theme ?? Theme.of(context);
+    
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: themeData.cardColor,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
@@ -39,18 +43,16 @@ class SettingsItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
+                    style: themeData.textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.black87,
+                      color: themeData.hintColor,
                     ),
                   ),
                   SizedBox(height: 4),
                   Text(
                     description,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
+                    style: themeData.textTheme.bodyMedium?.copyWith(
+                      color: themeData.hintColor.withOpacity(0.7),
                     ),
                   ),
                 ],

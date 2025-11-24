@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/routes/app_routes.dart';
-import 'package:des/widgets/offer_card.dart';
+import '../routes/app_routes.dart';
+import '../widgets/offer_card.dart';
 
 class SpecialOffersScreen extends StatelessWidget {
   // بيانات وهمية للعروض
@@ -30,12 +30,22 @@ class SpecialOffersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('العروض الخاصة'),
-        backgroundColor: Color(0xFF1a365d),
+        title: Text(
+          'العروض الخاصة',
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+        ),
+        backgroundColor: theme.primaryColor,
         foregroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: theme.iconTheme.size,
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -49,7 +59,7 @@ class SpecialOffersScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF1a365d), Color(0xFF0f2040)],
+                  colors: [theme.primaryColor, theme.primaryColor.darken(0.1)],
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -58,12 +68,15 @@ class SpecialOffersScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.card_giftcard, color: Colors.white),
+                      Icon(
+                        Icons.card_giftcard, 
+                        color: Colors.white,
+                        size: theme.iconTheme.size,
+                      ),
                       SizedBox(width: 8),
                       Text(
                         'عروض يمنية حصرية',
-                        style: TextStyle(
-                          fontSize: 18,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -73,8 +86,7 @@ class SpecialOffersScreen extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(
                     'استفد من عروضنا الخاصة لفترة محدودة واحصل على خصومات تصل إلى 40%',
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.white70,
                     ),
                   ),
@@ -110,5 +122,17 @@ class SpecialOffersScreen extends StatelessWidget {
       backgroundColor: Color(0xFFd69e2e),
       colorText: Color(0xFF1a365d),
     );
+  }
+}
+
+// Extension مساعد لتغميق الألوان
+extension ColorExtension on Color {
+  Color darken([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
   }
 }

@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/core/app_controller.dart';
-import 'package:des/routes/app_routes.dart';
-import 'package:des/widgets/settings_item.dart';
+import '../core/app_controller.dart';
+import '../routes/app_routes.dart';
+import '../widgets/settings_item.dart';
 
 class SettingsScreen extends StatelessWidget {
   final AppController appController = Get.find<AppController>();
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('الإعدادات'),
-        backgroundColor: Color(0xFF1a365d),
+        title: Text(
+          'الإعدادات',
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+        ),
+        backgroundColor: theme.primaryColor,
         foregroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: theme.iconTheme.size,
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -31,6 +41,7 @@ class SettingsScreen extends StatelessWidget {
                 },
                 activeColor: Color(0xFFd69e2e),
               ),
+              theme: theme,
             ),
             SizedBox(height: 12),
 
@@ -45,6 +56,7 @@ class SettingsScreen extends StatelessWidget {
                 },
                 activeColor: Color(0xFFd69e2e),
               ),
+              theme: theme,
             ),
             SizedBox(height: 12),
 
@@ -55,11 +67,12 @@ class SettingsScreen extends StatelessWidget {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildLanguageOption('العربية', 'ar'),
+                  _buildLanguageOption('العربية', 'ar', theme),
                   SizedBox(width: 8),
-                  _buildLanguageOption('English', 'en'),
+                  _buildLanguageOption('English', 'en', theme),
                 ],
               ),
+              theme: theme,
             ),
             SizedBox(height: 12),
 
@@ -69,11 +82,12 @@ class SettingsScreen extends StatelessWidget {
               description: 'اختر العملة المعروضة في التطبيق',
               trailing: Text(
                 'الريال اليمني',
-                style: TextStyle(
-                  color: Color(0xFF1a365d),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.primaryColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              theme: theme,
             ),
             SizedBox(height: 12),
 
@@ -81,6 +95,7 @@ class SettingsScreen extends StatelessWidget {
             SettingsItem(
               title: 'المظهر',
               description: 'اختر المظهر المناسب لك',
+              theme: theme,
             ),
             SizedBox(height: 12),
 
@@ -88,7 +103,7 @@ class SettingsScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -105,6 +120,7 @@ class SettingsScreen extends StatelessWidget {
                       'فاتح',
                       Icons.light_mode,
                       'light',
+                      theme,
                       isActive: true,
                     ),
                   ),
@@ -114,6 +130,7 @@ class SettingsScreen extends StatelessWidget {
                       'داكن',
                       Icons.dark_mode,
                       'dark',
+                      theme,
                     ),
                   ),
                   SizedBox(width: 12),
@@ -122,6 +139,7 @@ class SettingsScreen extends StatelessWidget {
                       'تلقائي',
                       Icons.auto_mode,
                       'auto',
+                      theme,
                     ),
                   ),
                 ],
@@ -136,7 +154,12 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {
                 _showComingSoon();
               },
-              trailing: Icon(Icons.arrow_back_ios, size: 16),
+              trailing: Icon(
+                isRTL ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+                size: 16,
+                color: theme.hintColor,
+              ),
+              theme: theme,
             ),
             SizedBox(height: 12),
 
@@ -147,7 +170,12 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {
                 _showComingSoon();
               },
-              trailing: Icon(Icons.arrow_back_ios, size: 16),
+              trailing: Icon(
+                isRTL ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+                size: 16,
+                color: theme.hintColor,
+              ),
+              theme: theme,
             ),
             SizedBox(height: 12),
 
@@ -158,7 +186,12 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {
                 _showComingSoon();
               },
-              trailing: Icon(Icons.arrow_back_ios, size: 16),
+              trailing: Icon(
+                isRTL ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
+                size: 16,
+                color: theme.hintColor,
+              ),
+              theme: theme,
             ),
           ],
         ),
@@ -166,7 +199,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLanguageOption(String text, String value) {
+  Widget _buildLanguageOption(String text, String value, ThemeData theme) {
     return GestureDetector(
       onTap: () {
         appController.changeLanguage(value);
@@ -175,29 +208,28 @@ class SettingsScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: appController.selectedLanguage.value == value
-              ? Color(0xFF1a365d)
+              ? theme.primaryColor
               : Colors.transparent,
           border: Border.all(
             color: appController.selectedLanguage.value == value
-                ? Color(0xFF1a365d)
-                : Colors.grey.shade300,
+                ? theme.primaryColor
+                : theme.dividerColor,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           text,
-          style: TextStyle(
+          style: theme.textTheme.bodySmall?.copyWith(
             color: appController.selectedLanguage.value == value
                 ? Colors.white
-                : Colors.black,
-            fontSize: 12,
+                : theme.hintColor,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildThemeOption(String title, IconData icon, String theme, {bool isActive = false}) {
+  Widget _buildThemeOption(String title, IconData icon, String themeType, ThemeData theme, {bool isActive = false}) {
     return GestureDetector(
       onTap: () {
         // تغيير المظهر
@@ -205,9 +237,9 @@ class SettingsScreen extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isActive ? Colors.blue.shade50 : Colors.white,
+          color: isActive ? theme.primaryColor.withOpacity(0.1) : theme.cardColor,
           border: Border.all(
-            color: isActive ? Color(0xFF1a365d) : Colors.grey.shade300,
+            color: isActive ? theme.primaryColor : theme.dividerColor,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
@@ -220,18 +252,22 @@ class SettingsScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: _getThemeColors(theme),
+                  colors: _getThemeColors(themeType, theme),
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(icon, color: _getIconColor(theme)),
+              child: Icon(
+                icon, 
+                color: _getIconColor(themeType, theme),
+                size: theme.iconTheme.size,
+              ),
             ),
             SizedBox(height: 8),
             Text(
               title,
-              style: TextStyle(
-                fontSize: 12,
+              style: theme.textTheme.bodySmall?.copyWith(
                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                color: theme.hintColor,
               ),
             ),
           ],
@@ -240,25 +276,25 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  List<Color> _getThemeColors(String theme) {
-    switch (theme) {
+  List<Color> _getThemeColors(String themeType, ThemeData theme) {
+    switch (themeType) {
       case 'dark':
         return [Color(0xFF2d2d2d), Color(0xFF1a1a1a)];
       case 'auto':
-        return [Colors.grey.shade100, Colors.grey.shade300];
+        return [theme.dividerColor.withOpacity(0.1), theme.dividerColor.withOpacity(0.3)];
       default:
-        return [Colors.grey.shade50, Colors.grey.shade200];
+        return [theme.dividerColor.withOpacity(0.05), theme.dividerColor.withOpacity(0.2)];
     }
   }
 
-  Color _getIconColor(String theme) {
-    switch (theme) {
+  Color _getIconColor(String themeType, ThemeData theme) {
+    switch (themeType) {
       case 'dark':
         return Colors.white;
       case 'auto':
-        return Colors.black;
+        return theme.hintColor;
       default:
-        return Colors.black;
+        return theme.hintColor;
     }
   }
 

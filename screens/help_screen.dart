@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/widgets/contact_method.dart';
-import 'package:des/widgets/menu_item.dart';
+import '../widgets/contact_method.dart';
+import '../widgets/menu_item.dart';
 
 class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('المساعدة والدعم'),
-        backgroundColor: Color(0xFF1a365d),
+        title: Text(
+          'المساعدة والدعم',
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+        ),
+        backgroundColor: theme.primaryColor,
         foregroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: theme.iconTheme.size,
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -21,7 +31,7 @@ class HelpScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -36,10 +46,9 @@ class HelpScreen extends StatelessWidget {
                 children: [
                   Text(
                     'ابحث في المساعدة',
-                    style: TextStyle(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.grey[700],
+                      color: theme.hintColor,
                     ),
                   ),
                   SizedBox(height: 8),
@@ -49,8 +58,12 @@ class HelpScreen extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: theme.iconTheme.size,
+                      ),
                     ),
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ],
               ),
@@ -60,7 +73,7 @@ class HelpScreen extends StatelessWidget {
             // قائمة المساعدة
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -76,43 +89,55 @@ class HelpScreen extends StatelessWidget {
                     icon: Icons.help,
                     title: 'كيفية الحجز',
                     onTap: () {
-                      _showHelpDetails('كيفية الحجز');
+                      _showHelpDetails('كيفية الحجز', theme, isRTL);
                     },
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   MenuItem(
                     icon: Icons.credit_card,
                     title: 'طرق الدفع المتاحة',
                     onTap: () {
-                      _showHelpDetails('طرق الدفع المتاحة');
+                      _showHelpDetails('طرق الدفع المتاحة', theme, isRTL);
                     },
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   MenuItem(
                     icon: Icons.swap_horiz,
                     title: 'إلغاء أو تعديل الحجز',
                     onTap: () {
-                      _showHelpDetails('إلغاء أو تعديل الحجز');
+                      _showHelpDetails('إلغاء أو تعديل الحجز', theme, isRTL);
                     },
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   MenuItem(
                     icon: Icons.star,
                     title: 'كيفية التقييم',
                     onTap: () {
-                      _showHelpDetails('كيفية التقييم');
+                      _showHelpDetails('كيفية التقييم', theme, isRTL);
                     },
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   MenuItem(
                     icon: Icons.person_add,
                     title: 'إنشاء حساب جديد',
                     onTap: () {
-                      _showHelpDetails('إنشاء حساب جديد');
+                      _showHelpDetails('إنشاء حساب جديد', theme, isRTL);
                     },
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   MenuItem(
                     icon: Icons.lock,
                     title: 'استعادة كلمة المرور',
                     onTap: () {
-                      _showHelpDetails('استعادة كلمة المرور');
+                      _showHelpDetails('استعادة كلمة المرور', theme, isRTL);
                     },
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                 ],
               ),
@@ -123,7 +148,7 @@ class HelpScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -138,10 +163,9 @@ class HelpScreen extends StatelessWidget {
                 children: [
                   Text(
                     'اتصل بنا',
-                    style: TextStyle(
-                      fontSize: 16,
+                    style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1a365d),
+                      color: theme.primaryColor,
                     ),
                   ),
                   SizedBox(height: 12),
@@ -149,18 +173,24 @@ class HelpScreen extends StatelessWidget {
                     icon: Icons.phone,
                     title: 'الهاتف',
                     info: '+967 1 234 567',
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   SizedBox(height: 12),
                   ContactMethod(
                     icon: Icons.email,
                     title: 'البريد الإلكتروني',
                     info: 'support@yemenstay.com',
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   SizedBox(height: 12),
                   ContactMethod(
                     icon: Icons.chat,
                     title: 'الدردشة الحية',
                     info: 'متاحة 24/7',
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                 ],
               ),
@@ -171,12 +201,12 @@ class HelpScreen extends StatelessWidget {
     );
   }
 
-  void _showHelpDetails(String title) {
+  void _showHelpDetails(String title, ThemeData theme, bool isRTL) {
     Get.bottomSheet(
       Container(
         height: Get.height * 0.7,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.cardColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
@@ -191,14 +221,16 @@ class HelpScreen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 18,
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF1a365d),
+                    color: theme.primaryColor,
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.close),
+                  icon: Icon(
+                    Icons.close,
+                    size: theme.iconTheme.size,
+                  ),
                   onPressed: () {
                     Get.back();
                   },
@@ -210,10 +242,9 @@ class HelpScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Text(
                   _getHelpContent(title),
-                  style: TextStyle(
-                    fontSize: 16,
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     height: 1.6,
-                    color: Colors.grey[700],
+                    color: theme.hintColor,
                   ),
                 ),
               ),

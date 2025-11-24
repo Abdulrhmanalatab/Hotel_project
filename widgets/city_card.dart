@@ -4,20 +4,24 @@ import 'package:cached_network_image/cached_network_image.dart';
 class CityCard extends StatelessWidget {
   final Map<String, dynamic> city;
   final VoidCallback onTap;
+  final ThemeData? theme;
 
   const CityCard({
     Key? key,
     required this.city,
     required this.onTap,
+    this.theme,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = theme ?? Theme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: themeData.cardColor,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
@@ -62,19 +66,17 @@ class CityCard extends StatelessWidget {
                   children: [
                     Text(
                       city['name'],
-                      style: TextStyle(
+                      style: themeData.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Color(0xFF1a365d),
+                        color: themeData.primaryColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 4),
                     Text(
                       city['description'],
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey[600],
+                      style: themeData.textTheme.bodySmall?.copyWith(
+                        color: themeData.hintColor,
                       ),
                       textAlign: TextAlign.center,
                     ),

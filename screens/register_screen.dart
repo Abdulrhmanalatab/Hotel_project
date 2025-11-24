@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/routes/app_routes.dart';
-import 'package:des/widgets/custom_button.dart';
-import 'package:des/widgets/custom_text_field.dart';
+import '../routes/app_routes.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
 
 class RegisterScreen extends StatelessWidget {
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -13,12 +13,24 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('إنشاء حساب جديد'),
-        backgroundColor: Color(0xFF1a365d),
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            isRTL ? Icons.arrow_forward : Icons.arrow_back,
+            color: theme.primaryColor,
+            size: theme.iconTheme.size,
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -31,7 +43,7 @@ class RegisterScreen extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Color(0xFF1a365d),
+                  color: theme.primaryColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
@@ -43,28 +55,28 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                 'إنشاء حساب جديد',
-                style: TextStyle(
-                  fontSize: 24,
+                style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1a365d),
+                  color: theme.primaryColor,
                 ),
               ),
               SizedBox(height: 8),
               Text(
-                'انضم إلينا واستمتع بتجربة فريدة',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
+                'انضم إلى مجتمعنا واستمتع بتجربة فريدة',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.hintColor,
                 ),
               ),
               SizedBox(height: 30),
 
               // نموذج التسجيل
               CustomTextField(
-                controller: nameController,
+                controller: fullNameController,
                 label: 'الاسم الكامل',
                 hintText: 'أدخل اسمك الكامل',
                 icon: Icons.person,
+                iconSize: theme.iconTheme.size,
+                theme: theme,
               ),
               SizedBox(height: 15),
               CustomTextField(
@@ -73,6 +85,8 @@ class RegisterScreen extends StatelessWidget {
                 hintText: 'أدخل بريدك الإلكتروني',
                 icon: Icons.email,
                 keyboardType: TextInputType.emailAddress,
+                iconSize: theme.iconTheme.size,
+                theme: theme,
               ),
               SizedBox(height: 15),
               CustomTextField(
@@ -81,6 +95,8 @@ class RegisterScreen extends StatelessWidget {
                 hintText: 'أدخل رقم هاتفك',
                 icon: Icons.phone,
                 keyboardType: TextInputType.phone,
+                iconSize: theme.iconTheme.size,
+                theme: theme,
               ),
               SizedBox(height: 15),
               CustomTextField(
@@ -89,16 +105,20 @@ class RegisterScreen extends StatelessWidget {
                 hintText: 'أنشئ كلمة مرور قوية',
                 icon: Icons.lock,
                 isPassword: true,
+                iconSize: theme.iconTheme.size,
+                theme: theme,
               ),
               SizedBox(height: 15),
               CustomTextField(
                 controller: confirmPasswordController,
                 label: 'تأكيد كلمة المرور',
                 hintText: 'أعد إدخال كلمة المرور',
-                icon: Icons.lock,
+                icon: Icons.lock_outline,
                 isPassword: true,
+                iconSize: theme.iconTheme.size,
+                theme: theme,
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 20),
 
               // شروط الخدمة
               Row(
@@ -108,19 +128,25 @@ class RegisterScreen extends StatelessWidget {
                     child: Text.rich(
                       TextSpan(
                         children: [
-                          TextSpan(text: 'أوافق على '),
+                          TextSpan(
+                            text: 'أوافق على ',
+                            style: theme.textTheme.bodyMedium,
+                          ),
                           TextSpan(
                             text: 'شروط الخدمة',
-                            style: TextStyle(
-                              color: Color(0xFF1a365d),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          TextSpan(text: ' و '),
+                          TextSpan(
+                            text: ' و ',
+                            style: theme.textTheme.bodyMedium,
+                          ),
                           TextSpan(
                             text: 'سياسة الخصوصية',
-                            style: TextStyle(
-                              color: Color(0xFF1a365d),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -130,7 +156,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 25),
 
               // زر إنشاء الحساب
               CustomButton(
@@ -139,7 +165,8 @@ class RegisterScreen extends StatelessWidget {
                   Get.offAllNamed(AppRoutes.HOME);
                 },
                 backgroundColor: Color(0xFFd69e2e),
-                textColor: Color(0xFF1a365d),
+                textColor: theme.primaryColor,
+                iconSize: theme.iconTheme.size,
               ),
               SizedBox(height: 20),
 
@@ -147,15 +174,18 @@ class RegisterScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('لديك حساب بالفعل؟'),
+                  Text(
+                    'لديك حساب بالفعل؟',
+                    style: theme.textTheme.bodyMedium,
+                  ),
                   TextButton(
                     onPressed: () {
-                      Get.back();
+                      Get.toNamed(AppRoutes.LOGIN);
                     },
                     child: Text(
-                      'تسجيل الدخول',
-                      style: TextStyle(
-                        color: Color(0xFF1a365d),
+                      'سجل الدخول',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

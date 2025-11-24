@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 class AppController extends GetxController {
   var isDarkMode = false.obs;
@@ -12,6 +13,12 @@ class AppController extends GetxController {
 
   void changeLanguage(String language) {
     selectedLanguage.value = language;
+    // تغيير اتجاه النص بناءً على اللغة
+    if (language == 'ar') {
+      Get.updateLocale(Locale('ar', 'SA'));
+    } else {
+      Get.updateLocale(Locale('en', 'US'));
+    }
   }
 
   void toggleNotifications() {
@@ -21,4 +28,7 @@ class AppController extends GetxController {
   void changePage(int index) {
     currentPageIndex.value = index;
   }
+
+  // دالة للحصول على اتجاه النص الحالي
+  bool get isRTL => selectedLanguage.value == 'ar';
 }

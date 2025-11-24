@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/routes/app_routes.dart';
-import 'package:des/widgets/custom_button.dart';
-import 'package:des/widgets/custom_text_field.dart';
+import '../routes/app_routes.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
 
 class EditProfileScreen extends StatelessWidget {
   final TextEditingController nameController = TextEditingController(text: 'أحمد اليماني');
@@ -14,12 +14,22 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text('تعديل الملف الشخصي'),
-        backgroundColor: Color(0xFF1a365d),
+        title: Text(
+          'تعديل الملف الشخصي',
+          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+        ),
+        backgroundColor: theme.primaryColor,
         foregroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: theme.iconTheme.size,
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -29,7 +39,7 @@ class EditProfileScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -49,9 +59,12 @@ class EditProfileScreen extends StatelessWidget {
                   SizedBox(height: 12),
                   OutlinedButton.icon(
                     onPressed: () {
-                      _showImagePicker();
+                      _showImagePicker(theme, isRTL);
                     },
-                    icon: Icon(Icons.camera_alt),
+                    icon: Icon(
+                      Icons.camera_alt,
+                      size: theme.iconTheme.size,
+                    ),
                     label: Text('تغيير الصورة'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Color(0xFFd69e2e),
@@ -67,7 +80,7 @@ class EditProfileScreen extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -84,6 +97,8 @@ class EditProfileScreen extends StatelessWidget {
                     label: 'الاسم الكامل',
                     hintText: 'أدخل اسمك الكامل',
                     icon: Icons.person,
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   SizedBox(height: 16),
                   CustomTextField(
@@ -92,6 +107,8 @@ class EditProfileScreen extends StatelessWidget {
                     hintText: 'أدخل بريدك الإلكتروني',
                     icon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   SizedBox(height: 16),
                   CustomTextField(
@@ -100,6 +117,8 @@ class EditProfileScreen extends StatelessWidget {
                     hintText: 'أدخل رقم هاتفك',
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   SizedBox(height: 16),
                   CustomTextField(
@@ -107,6 +126,8 @@ class EditProfileScreen extends StatelessWidget {
                     label: 'تاريخ الميلاد',
                     hintText: 'اختر تاريخ الميلاد',
                     icon: Icons.calendar_today,
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   SizedBox(height: 16),
                   Column(
@@ -114,10 +135,9 @@ class EditProfileScreen extends StatelessWidget {
                     children: [
                       Text(
                         'البلد',
-                        style: TextStyle(
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Colors.grey[700],
+                          color: theme.hintColor,
                         ),
                       ),
                       SizedBox(height: 8),
@@ -132,7 +152,10 @@ class EditProfileScreen extends StatelessWidget {
                         ].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value),
+                            child: Text(
+                              value,
+                              style: theme.textTheme.bodyMedium,
+                            ),
                           );
                         }).toList(),
                         onChanged: (value) {},
@@ -140,7 +163,10 @@ class EditProfileScreen extends StatelessWidget {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          prefixIcon: Icon(Icons.flag),
+                          prefixIcon: Icon(
+                            Icons.flag,
+                            size: theme.iconTheme.size,
+                          ),
                         ),
                       ),
                     ],
@@ -152,6 +178,8 @@ class EditProfileScreen extends StatelessWidget {
                     hintText: 'أدخل كلمة مرور جديدة',
                     icon: Icons.lock,
                     isPassword: true,
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   SizedBox(height: 16),
                   CustomTextField(
@@ -160,15 +188,18 @@ class EditProfileScreen extends StatelessWidget {
                     hintText: 'أعد إدخال كلمة المرور',
                     icon: Icons.lock,
                     isPassword: true,
+                    iconSize: theme.iconTheme.size,
+                    theme: theme,
                   ),
                   SizedBox(height: 20),
                   CustomButton(
                     text: 'حفظ التغييرات',
                     onPressed: () {
-                      _showSuccessDialog();
+                      _showSuccessDialog(theme);
                     },
                     backgroundColor: Color(0xFFd69e2e),
-                    textColor: Color(0xFF1a365d),
+                    textColor: theme.primaryColor,
+                    iconSize: theme.iconTheme.size,
                   ),
                 ],
               ),
@@ -179,11 +210,11 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  void _showImagePicker() {
+  void _showImagePicker(ThemeData theme, bool isRTL) {
     Get.bottomSheet(
       Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.cardColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
@@ -193,24 +224,42 @@ class EditProfileScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: Icon(Icons.photo_library),
-              title: Text('اختر من المعرض'),
+              leading: Icon(
+                Icons.photo_library,
+                size: theme.iconTheme.size,
+              ),
+              title: Text(
+                'اختر من المعرض',
+                style: theme.textTheme.bodyMedium,
+              ),
               onTap: () {
                 Get.back();
                 // اختيار من المعرض
               },
             ),
             ListTile(
-              leading: Icon(Icons.camera_alt),
-              title: Text('التقاط صورة'),
+              leading: Icon(
+                Icons.camera_alt,
+                size: theme.iconTheme.size,
+              ),
+              title: Text(
+                'التقاط صورة',
+                style: theme.textTheme.bodyMedium,
+              ),
               onTap: () {
                 Get.back();
                 // التقاط صورة
               },
             ),
             ListTile(
-              leading: Icon(Icons.cancel),
-              title: Text('إلغاء'),
+              leading: Icon(
+                Icons.cancel,
+                size: theme.iconTheme.size,
+              ),
+              title: Text(
+                'إلغاء',
+                style: theme.textTheme.bodyMedium,
+              ),
               onTap: () {
                 Get.back();
               },
@@ -221,28 +270,43 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  void _showSuccessDialog() {
+  void _showSuccessDialog(ThemeData theme) {
     Get.dialog(
       AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.cardColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         title: Row(
           children: [
-            Icon(Icons.check_circle, color: Colors.green),
+            Icon(
+              Icons.check_circle, 
+              color: Colors.green,
+              size: theme.iconTheme.size,
+            ),
             SizedBox(width: 8),
-            Text('تم التحديث'),
+            Text(
+              'تم التحديث',
+              style: theme.textTheme.titleMedium,
+            ),
           ],
         ),
-        content: Text('تم تحديث معلومات ملفك الشخصي بنجاح.'),
+        content: Text(
+          'تم تحديث معلومات ملفك الشخصي بنجاح.',
+          style: theme.textTheme.bodyMedium,
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Get.back();
               Get.back();
             },
-            child: Text('موافق'),
+            child: Text(
+              'موافق',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.primaryColor,
+              ),
+            ),
           ),
         ],
       ),

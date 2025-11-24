@@ -5,20 +5,25 @@ class HotelCard extends StatelessWidget {
   final Map<String, dynamic> hotel;
   final VoidCallback onDetails;
   final VoidCallback onBook;
+  final ThemeData? theme;
 
   const HotelCard({
     Key? key,
     required this.hotel,
     required this.onDetails,
     required this.onBook,
+    this.theme,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = theme ?? Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: themeData.cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -40,7 +45,10 @@ class HotelCard extends StatelessWidget {
                 Container(
                   width: 80,
                   height: 80,
-                  margin: EdgeInsets.only(left: 16),
+                  margin: EdgeInsets.only(
+                      left: isRTL ? 12 : 0,
+                      right: isRTL ? 0 : 12
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -55,11 +63,15 @@ class HotelCard extends StatelessWidget {
                       ),
                       errorWidget: (context, url, error) => Container(
                         color: Colors.grey[200],
-                        child: Icon(Icons.hotel),
+                        child: Icon(
+                          Icons.hotel,
+                          size: themeData.iconTheme.size,
+                        ),
                       ),
                     ),
                   ),
                 ),
+
                 // معلومات الفندق
                 Expanded(
                   child: Column(
@@ -67,36 +79,47 @@ class HotelCard extends StatelessWidget {
                     children: [
                       Text(
                         hotel['name'],
-                        style: TextStyle(
+                        style: themeData.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Color(0xFF1a365d),
+                          color: themeData.primaryColor,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 4),
+                      SizedBox(height: 6),
                       Row(
                         children: [
-                          Icon(Icons.location_on, size: 14, color: Color(0xFF1a365d)),
+                          Icon(
+                              Icons.location_on,
+                              size: 14,
+                              color: themeData.primaryColor
+                          ),
                           SizedBox(width: 4),
-                          Text(
-                            hotel['location'],
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
+                          Expanded(
+                            child: Text(
+                              hotel['location'],
+                              style: themeData.textTheme.bodyMedium?.copyWith(
+                                color: themeData.hintColor,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 4),
+                      SizedBox(height: 6),
                       Row(
                         children: [
-                          _buildRatingStars(hotel['rating']),
+                          _buildRatingStars(hotel['rating'], themeData),
                           SizedBox(width: 8),
-                          Text(
-                            '${hotel['rating']} (${hotel['reviews']} تقييم)',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
+                          Expanded(
+                            child: Text(
+                              '${hotel['rating']} (${hotel['reviews']} تقييم)',
+                              style: themeData.textTheme.bodySmall?.copyWith(
+                                color: themeData.hintColor,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -104,55 +127,81 @@ class HotelCard extends StatelessWidget {
                     ],
                   ),
                 ),
+
                 // السعر
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${hotel['price']} ريال',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Color(0xFF1a365d),
+                Container(
+                  constraints: BoxConstraints(
+                    minWidth: 70, // الحد الأدنى للعرض
+                    maxWidth: 100, // الحد الأقصى للعرض
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${hotel['price']} ريال',
+                        style: themeData.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: themeData.primaryColor,
+                        ),
+                        textAlign: TextAlign.end,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    Text(
-                      'لليلة الواحدة',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
+                      SizedBox(height: 2),
+                      Text(
+                        'لليلة الواحدة',
+                        style: themeData.textTheme.bodySmall?.copyWith(
+                          color: themeData.hintColor,
+                        ),
+                        textAlign: TextAlign.end,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
+
           // الميزات
           Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            color: Colors.grey[50],
+            color: themeData.dividerColor.withOpacity(0.1),
             child: Wrap(
-              spacing: 16,
+              spacing: 12, // تقليل المسافة بين العناصر
               runSpacing: 8,
               children: hotel['features'].map<Widget>((feature) {
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.check_circle, size: 14, color: Color(0xFF1a365d)),
-                    SizedBox(width: 4),
-                    Text(
-                      feature,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
+                return Container(
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.4, // تحديد أقصى عرض
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                          Icons.check_circle,
+                          size: 14,
+                          color: themeData.primaryColor
                       ),
-                    ),
-                  ],
+                      SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          feature,
+                          style: themeData.textTheme.bodySmall?.copyWith(
+                            color: themeData.hintColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }).toList(),
             ),
           ),
+
           // الأزرار
           Padding(
             padding: EdgeInsets.all(16),
@@ -170,7 +219,7 @@ class HotelCard extends StatelessWidget {
                     ),
                     child: Text(
                       'عرض التفاصيل',
-                      style: TextStyle(
+                      style: themeData.textTheme.bodyMedium?.copyWith(
                         color: Color(0xFFd69e2e),
                         fontWeight: FontWeight.bold,
                       ),
@@ -183,7 +232,7 @@ class HotelCard extends StatelessWidget {
                     onPressed: onBook,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFd69e2e),
-                      foregroundColor: Color(0xFF1a365d),
+                      foregroundColor: themeData.primaryColor,
                       padding: EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -191,7 +240,7 @@ class HotelCard extends StatelessWidget {
                     ),
                     child: Text(
                       'احجز الآن',
-                      style: TextStyle(
+                      style: themeData.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -205,19 +254,31 @@ class HotelCard extends StatelessWidget {
     );
   }
 
-  Widget _buildRatingStars(double rating) {
+  Widget _buildRatingStars(double rating, ThemeData theme) {
     List<Widget> stars = [];
     int fullStars = rating.floor();
     bool hasHalfStar = (rating - fullStars) > 0;
 
     for (int i = 0; i < fullStars; i++) {
-      stars.add(Icon(Icons.star, size: 14, color: Color(0xFFd69e2e)));
+      stars.add(Icon(
+          Icons.star,
+          size: 14,
+          color: Color(0xFFd69e2e)
+      ));
     }
     if (hasHalfStar) {
-      stars.add(Icon(Icons.star_half, size: 14, color: Color(0xFFd69e2e)));
+      stars.add(Icon(
+          Icons.star_half,
+          size: 14,
+          color: Color(0xFFd69e2e)
+      ));
     }
     for (int i = stars.length; i < 5; i++) {
-      stars.add(Icon(Icons.star_border, size: 14, color: Color(0xFFd69e2e)));
+      stars.add(Icon(
+          Icons.star_border,
+          size: 14,
+          color: Color(0xFFd69e2e)
+      ));
     }
 
     return Row(children: stars);

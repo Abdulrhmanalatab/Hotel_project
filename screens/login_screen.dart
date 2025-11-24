@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:des/routes/app_routes.dart';
-import 'package:des/widgets/custom_button.dart';
-import 'package:des/widgets/custom_text_field.dart';
+import '../routes/app_routes.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -10,8 +10,11 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20),
@@ -23,7 +26,7 @@ class LoginScreen extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Color(0xFF1a365d),
+                  color: theme.primaryColor,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
@@ -35,18 +38,16 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                 'تسجيل الدخول',
-                style: TextStyle(
-                  fontSize: 24,
+                style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1a365d),
+                  color: theme.primaryColor,
                 ),
               ),
               SizedBox(height: 8),
               Text(
                 'سجل دخولك للاستفادة من جميع المزايا',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.hintColor,
                 ),
               ),
               SizedBox(height: 30),
@@ -57,7 +58,11 @@ class LoginScreen extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {},
-                      icon: Icon(Icons.g_mobiledata, color: Colors.red),
+                      icon: Icon(
+                        Icons.g_mobiledata, 
+                        color: Colors.red,
+                        size: theme.iconTheme.size,
+                      ),
                       label: Text('جوجل'),
                       style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 12),
@@ -71,7 +76,11 @@ class LoginScreen extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {},
-                      icon: Icon(Icons.facebook, color: Colors.blue),
+                      icon: Icon(
+                        Icons.facebook, 
+                        color: Colors.blue,
+                        size: theme.iconTheme.size,
+                      ),
                       label: Text('فيسبوك'),
                       style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 12),
@@ -91,7 +100,10 @@ class LoginScreen extends StatelessWidget {
                   Expanded(child: Divider()),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text('أو'),
+                    child: Text(
+                      'أو',
+                      style: theme.textTheme.bodyMedium,
+                    ),
                   ),
                   Expanded(child: Divider()),
                 ],
@@ -104,6 +116,8 @@ class LoginScreen extends StatelessWidget {
                 label: 'البريد الإلكتروني',
                 hintText: 'أدخل بريدك الإلكتروني',
                 icon: Icons.email,
+                iconSize: theme.iconTheme.size,
+                theme: theme,
               ),
               SizedBox(height: 15),
               CustomTextField(
@@ -112,6 +126,8 @@ class LoginScreen extends StatelessWidget {
                 hintText: 'أدخل كلمة المرور',
                 icon: Icons.lock,
                 isPassword: true,
+                iconSize: theme.iconTheme.size,
+                theme: theme,
               ),
               SizedBox(height: 15),
 
@@ -122,7 +138,10 @@ class LoginScreen extends StatelessWidget {
                   Row(
                     children: [
                       Checkbox(value: true, onChanged: (value) {}),
-                      Text('تذكرني'),
+                      Text(
+                        'تذكرني',
+                        style: theme.textTheme.bodyMedium,
+                      ),
                     ],
                   ),
                   TextButton(
@@ -131,7 +150,9 @@ class LoginScreen extends StatelessWidget {
                     },
                     child: Text(
                       'نسيت كلمة المرور؟',
-                      style: TextStyle(color: Color(0xFF1a365d)),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.primaryColor,
+                      ),
                     ),
                   ),
                 ],
@@ -145,7 +166,8 @@ class LoginScreen extends StatelessWidget {
                   Get.offAllNamed(AppRoutes.HOME);
                 },
                 backgroundColor: Color(0xFFd69e2e),
-                textColor: Color(0xFF1a365d),
+                textColor: theme.primaryColor,
+                iconSize: theme.iconTheme.size,
               ),
               SizedBox(height: 20),
 
@@ -153,15 +175,18 @@ class LoginScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('ليس لديك حساب؟'),
+                  Text(
+                    'ليس لديك حساب؟',
+                    style: theme.textTheme.bodyMedium,
+                  ),
                   TextButton(
                     onPressed: () {
                       Get.toNamed(AppRoutes.REGISTER);
                     },
                     child: Text(
                       'إنشاء حساب جديد',
-                      style: TextStyle(
-                        color: Color(0xFF1a365d),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
